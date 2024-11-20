@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int info;
+    struct node* ptr;
+} *top = NULL, *temp;
+
+int count = 0;
+
+void push(int data) {
+    if (top == NULL) {
+        top = (struct node*)malloc(sizeof(struct node));
+        top->ptr = NULL;
+        top->info = data;
+    } else {
+        temp = (struct node*)malloc(sizeof(struct node));
+        temp->info = data;
+        temp->ptr = top;
+        top = temp;
+    }
+    count++;
+    printf("Node with value %d is inserted\n", data);
+}
+
+int pop() {
+    struct node* top1;
+    int popped;
+
+    if (top == NULL) {
+        printf("Stack Underflow\n");
+        return -1;
+    } else {
+        top1 = top;
+        popped = top->info;
+        top = top->ptr;
+        free(top1);
+        count--;
+        return popped;
+    }
+}
+
+void display() {
+    struct node* top1 = top;
+
+    if (top1 == NULL) {
+        printf("Stack is empty.\n");
+    } else {
+        printf("Stack elements are: ");
+        while (top1 != NULL) {
+            printf("%d ", top1->info);
+            top1 = top1->ptr;
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int choice, value;
+
+    printf("Stack using Linked List\n");
+    printf("1. Push\n");
+    printf("2. Pop\n");
+    printf("3. Display\n");
+    printf("4. Exit\n");
+
+    while (1) {
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter the value to push: ");
+                scanf("%d", &value);
+                push(value);
+                break;
+
+            case 2:
+                value = pop();
+                if (value != -1)
+                    printf("Popped element: %d\n", value);
+                break;
+
+            case 3:
+                display();
+                break;
+
+            case 4:
+                printf("Exiting program...\n");
+                exit(0);
+
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
